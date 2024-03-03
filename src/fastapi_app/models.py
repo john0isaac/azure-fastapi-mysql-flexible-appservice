@@ -3,7 +3,7 @@
 import os
 import typing
 
-from sqlmodel import Field, Relationship, SQLModel, create_engine
+from sqlmodel import Column, Field, Relationship, SQLModel, String, create_engine
 
 MYSQL_USER = os.environ.get("MYSQL_USER")
 MYSQL_PASS = os.environ.get("MYSQL_PASS")
@@ -40,7 +40,7 @@ class Destination(SQLModel, table=True):
     id: typing.Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     subtitle: typing.Optional[str]
-    description: typing.Optional[str] = Field(max_length=1000)
+    description: typing.Optional[str] = Field(sa_column=Column(String(10000)))
     cruises: typing.List["Cruise"] = Relationship(
         back_populates="destinations",
         link_model=CruiseDestinationLink,
